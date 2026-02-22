@@ -1,4 +1,4 @@
-
+# This is the home assistant configuration file. See the docs at https://www.home-assistant.io/docs/configuration/ for details.
 # Loads default set of integrations. Do not remove.
 default_config:
 
@@ -6,27 +6,11 @@ default_config:
 frontend:
   themes: !include_dir_merge_named themes
 
-# Text to speech
-tts:
-  - platform: google_translate
-
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-#time and date:
-sensor:
-    - platform: time_date
-      display_options:
-        - 'time'
-        - 'date'
-    - platform: template
-      sensors:
-        my_date:
-          friendly_name: "Date"
-          icon_template: mdi:calendar
-          value_template: >-
-            {{ as_timestamp(strptime(states('sensor.date'), '%Y-%m-%d')) | timestamp_custom("%a, %b %d") }}
+
 
 #ffmpeg enabled here for dahua camera integration streaming
 ffmpeg:
@@ -35,32 +19,6 @@ logger:
   default: info
   logs:
     custom_components.dahua: debug
-
-# Hydrawise integration manually added
-#hydrawise:
-#  access_token: 14B7-A264-C7B3-158C
-  # Example configuration.yaml entry
-#binary_sensor:
-#  - platform: hydrawise
-  # Example configuration.yaml entry
-#sensor:
-#  - platform: hydrawise
-#  # Example configuration.yaml entry
-#switch:
-#  - platform: hydrawise
-
-#climate:
-#  - platform: infinitude
-#    host: sbserver
-#    port: 3000
-#    zone_names:
-#      - Zone 1
-#    # Thermostat 2 Level 2
-#  - platform: infinitude
-#    host: sbserver
-#    port: 3001
-#    zone_names:
-#      - Zone 2
 
 climate:
     # Thermostat 1
@@ -76,47 +34,32 @@ climate:
     zone_names:
       - 2nd Floor # Change to your preference
 
-# Example configuration.yaml entry
-#alarm_control_panel:
-#  - platform: manual
-#    name: Home Alarm
-#    code: "7422"
-#    arming_time: 30
-#    delay_time: 20
-#    trigger_time: 4
-#    disarmed:
-#      trigger_time: 0
-#    armed_home:
-#      arming_time: 0
-#      delay_time: 0
-
-#duckdns ddns service
-#duckdns:
-#  domain: 7reservoir
-#  access_token: 3be2465e-a40f-47bd-afd0-a9443e17c92a
-
-#enable https secure connections
+# enable https secure connections
 http:
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.1.170          # ← your NixOS server IP
-  
-
-# Example configuration.yaml entry for Google Mail.
-notify:
-  - name: "Email Notification"
-    platform: smtp
-    server: "smtp.gmail.com"
-    port: 587
-    timeout: 15
-    sender: "7reservoiravenue@gmail.com"
-    encryption: starttls
-    username: "7reservoiravenue@gmail.com"
-    password: "qwer0987"
-    recipient:
-      - "7reservoiravenue@gmail.com"
-      - "SBRT@astound.net"
-    sender_name: "Home Assistant"
     
+# ────────────────────────────────────────────────
+# Modern template entities (migrate old sensor style here)
+template:
+  - sensor:
+      - name: "Formatted Date"
+        icon: "mdi:calendar"
+        state: "{{ as_timestamp(strptime(states('sensor.date'), '%Y-%m-%d')) | timestamp_custom('%a, %b %d') }}"
+
+# time and date:
+# sensor:
+#    - platform: time_date
+#      display_options:
+#        - 'time'
+#        - 'date'
+#    - platform: template
+#      sensors:
+#        my_date:
+#          friendly_name: "Date"
+#          icon_template: mdi:calendar
+#          value_template: >-
+#            {{ as_timestamp(strptime(states('sensor.date'), '%Y-%m-%d')) | timestamp_custom("%a, %b %d") }}
