@@ -20,20 +20,6 @@ logger:
   logs:
     custom_components.dahua: debug
 
-climate:
-    # Thermostat 1
-  - platform: infinitude
-    host: 192.168.1.105
-    port: 3000
-    zone_names: # If your thermostat's zoning is enabled, recommend setting the zone names on the thermostat and leaving the zone entries blank (total zones must still match hyphens)
-      - 1st Floor
-    # Thermostat 2
-  - platform: infinitude
-    host: 192.168.1.107
-    port: 3000
-    zone_names:
-      - 2nd Floor # Change to your preference
-
 # enable https secure connections
 http:
   ssl_certificate: /ssl/fullchain.pem
