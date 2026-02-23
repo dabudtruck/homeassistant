@@ -35,17 +35,4 @@ template:
       - name: "Formatted Date"
         icon: "mdi:calendar"
         state: "{{ as_timestamp(strptime(states('sensor.date'), '%Y-%m-%d')) | timestamp_custom('%a, %b %d') }}"
-
-# time and date:
-# sensor:
-#    - platform: time_date
-#      display_options:
-#        - 'time'
-#        - 'date'
-#    - platform: template
-#      sensors:
-#        my_date:
-#          friendly_name: "Date"
-#          icon_template: mdi:calendar
-#          value_template: >-
-#            {{ as_timestamp(strptime(states('sensor.date'), '%Y-%m-%d')) | timestamp_custom("%a, %b %d") }}
+        
